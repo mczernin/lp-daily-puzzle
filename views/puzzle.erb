@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dailypuzzle</title>
+  <style type="text/css" media="screen">
+    .puzzle {
+      display: block;
+      background: url(background.png) no-repeat;
+    }
+
+    .puzzle .inner {
+      padding: 79px 20px 22px 20px;
+    }
+
+    td {
+      font-size: 26px;
+      width:34px;
+      height: 35px;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="puzzle">
+    <div class="inner">
+      <table>
+      <% @puzzle_out.each do | row |%>
+        <tr>
+          <% row.each do | column |%>
+            <td><%= column != '.' ? column : " "%></td>
+            <% end %>
+        </tr>
+      <% end %>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
