@@ -5,9 +5,10 @@ post '/pull' do
   require './sudoku_generator'
   config = JSON.parse(params[:config])
   config['difficulty'] = "easy" if config['test']
-  @puzzle_out = SudokuGenerator.new(config['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(3).to_a
+  @puzzle_out = SudokuGenerator.new(config['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
   erb :puzzle
 end
+
 
 post '/validate_config' do
   content_type :json
