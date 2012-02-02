@@ -23,3 +23,9 @@ post '/validate_config' do
   end
   response.to_json
 end
+
+get '/sample' do
+  require './sudoku_generator'
+  @puzzle_out = SudokuGenerator::SAMPLE_DATA.split(%r{\s*}).each_slice(9).to_a
+  erb :puzzle
+end
