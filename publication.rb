@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'json'
 
-post '/pull' do
+post '/pull/' do
   require './sudoku_generator'
   config = JSON.parse(params[:config])
   config['difficulty'] = "easy" if config['test']
@@ -10,7 +10,7 @@ post '/pull' do
 end
 
 
-post '/validate_config' do
+post '/validate_config/' do
   content_type :json
   response = {}
   response[:errors] = []
@@ -24,7 +24,7 @@ post '/validate_config' do
   response.to_json
 end
 
-get '/sample.html' do
+get '/sample/' do
   require './sudoku_generator'
   @puzzle_out = SudokuGenerator::SAMPLE_DATA.split(%r{\s*}).each_slice(9).to_a
   erb :puzzle
