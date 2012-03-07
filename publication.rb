@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'json'
 
-pull '/pull/' do
+post '/pull/' do
   require './sudoku_generator'
   config = JSON.parse(params[:config])
   
