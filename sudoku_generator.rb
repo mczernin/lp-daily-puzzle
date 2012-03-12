@@ -8,8 +8,6 @@ require 'set'
 # $LOG = Logger.new('/tmp/sudoku_generator.log') 
 $LOG.level = Logger::DEBUG if $LOG
 
-SAMPLE_DATA = "7..5..62.5.6.73..9....4.3....8..4.1.2...89....592....836....1.5.72.6..9..9.4.1.7."
-
 # for Ruby 1.8.6-compatibility
 if(! Array.method_defined?(:count) )
 	class ::Array
@@ -409,7 +407,7 @@ end
 
 class SudokuGenerator
 	@@difficulty = {:easy => 41, :medium => 36, :hard => 33}
-
+  SAMPLE_DATA = "7..5..62.5.6.73..9....4.3....8..4.1.2...89....592....836....1.5.72.6..9..9.4.1.7."
 	def initialize(level = :hard)
 		@level = level.to_sym
 	end
