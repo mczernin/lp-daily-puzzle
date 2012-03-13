@@ -1,6 +1,14 @@
 require 'sinatra'
 require 'json'
 
+get '/edition/' do
+  require './sudoku_generator'
+  params['difficulty'] = "easy" if params['test'] || params['difficulty'].nil?
+  @puzzle_out = SudokuGenerator.new(params['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
+  etag Digest::MD5.hexdigest(@puzzle_out.to_s)
+  erb :puzzle
+end
+
 post '/pull/' do
   require './sudoku_generator'
   config = JSON.parse(params[:config])
