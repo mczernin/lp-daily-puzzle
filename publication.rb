@@ -1,11 +1,12 @@
 require 'sinatra'
 require 'json'
+require 'date'
 
 get '/edition/' do
   require './sudoku_generator'
   params['difficulty'] = "easy" if params['test'] || params['difficulty'].nil?
+  etag Digest::MD5.hexdigest(params['difficulty']+Date.ordinal.to_s)
   @puzzle_out = SudokuGenerator.new(params['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
-  etag Digest::MD5.hexdigest(@puzzle_out.to_s)
   erb :puzzle
 end
 
