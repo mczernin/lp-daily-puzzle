@@ -22,6 +22,68 @@ describe 'Daily Puzzle Publication' do
     
   end
   
+  describe 'edition' do
+   it 'should return html for a pull' do
+      get '/edition/?difficulty=easy'
+      last_response.should be_ok
+      last_response.body.scan("<td>").length.should == 81
+    end
+    
+    it 'should return html for a pull' do
+      get '/edition/?difficulty=medium'
+      last_response.should be_ok
+      last_response.body.scan("<td>").length.should == 81
+    end
+      
+    it 'should return html for a pull' do
+      get '/edition/?difficulty=hard'
+      last_response.should be_ok
+      last_response.body.scan("<td>").length.should == 81
+    end
+    
+    it 'should set an etag that changes every day' do
+      date_one = DateTime.parse('3rd Feb 2001 04:05:06+03:30')
+      date_two = DateTime.parse('4th Feb 2001 05:05:06+03:30')
+      date_three = DateTime.parse('4th Feb 2001 08:10:06+03:30')
+      DateTime.stub(:new).and_return(date_one)
+      get '/edition/?difficulty=hard'
+      etag_one = last_response.original_headers["ETag"]
+      
+      DateTime.stub(:new).and_return(date_two)
+      get '/edition/?difficulty=hard'
+      etag_two = last_response.original_headers["ETag"]
+      
+      get '/edition/?difficulty=hard'
+      etag_three = last_response.original_headers["ETag"]
+      
+      DateTime.stub(:new).and_return(date_three)
+      get '/edition/?difficulty=hard'
+      etag_four = last_response.original_headers["ETag"]
+      
+      etag_one.should_not == etag_two
+      etag_two.should == etag_three
+      etag_four.should == etag_three
+    end
+    
+    it 'should set an etag that changes every for different difficulties' do
+     
+      get '/edition/?difficulty=hard'
+      etag_hard = last_response.original_headers["ETag"]
+      
+      get '/edition/?difficulty=medium'
+      etag_medium = last_response.original_headers["ETag"]
+      
+      get '/edition/?difficulty=easy'
+      etag_easy = last_response.original_headers["ETag"]
+      
+      
+      
+      etag_hard.should_not == etag_medium
+      etag_medium.should_not == etag_easy
+      etag_easy.should_not == etag_hard
+    end
+  end
+  
   
   describe 'posting a validation config' do
     
