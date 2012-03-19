@@ -5,21 +5,10 @@ require 'date'
 get '/edition/' do
   require './sudoku_generator'
   params['difficulty'] = "easy" if params['test'] || params['difficulty'].nil?
-  etag Digest::MD5.hexdigest(params['difficulty']+DateTime.new.strftime('%d%m%Y'))
+  etag Digest::MD5.hexdigest(params['difficulty']+Time.now.strftime('%d%m%Y'))
   @puzzle_out = SudokuGenerator.new(params['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
   erb :puzzle
 end
-
-post '/pull/' do
-  require './sudoku_generator'
-  config = JSON.parse(params[:config])
-  
-  config['difficulty'] = "easy" if config['test'] || config['difficulty'].nil?
-  @puzzle_out = SudokuGenerator.new(config['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
-  etag Digest::MD5.hexdigest(@puzzle_out.to_s)
-  erb :puzzle
-end
-
 
 post '/validate_config/' do
   content_type :json
