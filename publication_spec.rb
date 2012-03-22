@@ -11,19 +11,16 @@ describe 'Daily Puzzle Publication' do
   def app
     Sinatra::Application
   end
-
-  describe "pulling a new puzzle" do
-    
-    it "should generate soemthing that looks like a puzzle" do      
-      post '/pull/', :config => {:difficulty => "easy"}.to_json
-      last_response.should be_ok
-      last_response.body.scan("<td>").length.should == 81
-    end
-    
-  end
   
   describe 'edition' do
-   it 'should return html for a pull' do
+    
+    before (:each) {
+      @sudoku_generator = SudokuGenerator.new
+      @sudoku_generator.stub(:generate).and_return(SudokuGenerator::SAMPLE_DATA)
+      SudokuGenerator.stub(:new).and_return(@sudoku_generator)
+    }
+    
+    it 'should return html for a pull' do
       get '/edition/?difficulty=easy'
       last_response.should be_ok
       last_response.body.scan("<td>").length.should == 81
@@ -42,21 +39,21 @@ describe 'Daily Puzzle Publication' do
     end
     
     it 'should set an etag that changes every day' do
-      date_one = DateTime.parse('3rd Feb 2001 04:05:06+03:30')
-      date_two = DateTime.parse('4th Feb 2001 05:05:06+03:30')
-      date_three = DateTime.parse('4th Feb 2001 08:10:06+03:30')
-      DateTime.stub(:new).and_return(date_one)
+      date_one = Time.parse('3rd Feb 2001 04:05:06+03:30')
+      date_two = Time.parse('4th Feb 2001 05:05:06+03:30')
+      date_three = Time.parse('4th Feb 2001 08:10:06+03:30')
+      Time.stub(:now).and_return(date_one)
       get '/edition/?difficulty=hard'
       etag_one = last_response.original_headers["ETag"]
       
-      DateTime.stub(:new).and_return(date_two)
+      Time.stub(:now).and_return(date_two)
       get '/edition/?difficulty=hard'
       etag_two = last_response.original_headers["ETag"]
       
       get '/edition/?difficulty=hard'
       etag_three = last_response.original_headers["ETag"]
       
-      DateTime.stub(:new).and_return(date_three)
+      Time.stub(:now).and_return(date_three)
       get '/edition/?difficulty=hard'
       etag_four = last_response.original_headers["ETag"]
       
@@ -153,7 +150,6 @@ describe 'Daily Puzzle Publication' do
       json["name"].should_not == nil
       json["description"].should_not == nil
       json["delivered_every"].should_not == nil
-      json["content_type"].should_not == nil
     end
   
   end
