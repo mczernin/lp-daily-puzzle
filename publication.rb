@@ -4,8 +4,8 @@ require 'date'
 
 get '/edition/' do
   require './sudoku_generator'
+  etag Digest::MD5.hexdigest(params['difficulty']+Time.now.strftime('%d%m%Y')) if !params['difficulty'].nil?
   params['difficulty'] = "easy" if params['test'] || params['difficulty'].nil?
-  etag Digest::MD5.hexdigest(params['difficulty']+Time.now.strftime('%d%m%Y'))
   @puzzle_out = SudokuGenerator.new(params['difficulty'].to_sym).generate.split(%r{\s*}).each_slice(9).to_a
   erb :puzzle
 end
