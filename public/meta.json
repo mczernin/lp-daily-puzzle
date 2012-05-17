@@ -1,6 +1,7 @@
 {
   "name":"Daily Puzzle",
   "description":"The ideal commuting companion! Select a difficulty level to give your brain a workout.",
+  "delivered_on":"every day",
   "delivered_every":"day",
   "config" : {"fields": [
     {
