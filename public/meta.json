@@ -8,7 +8,7 @@
       "type": "select",
       "name": "difficulty",
       "label": "Difficulty level",
-      "options": [["Easy", "easy"], ["Medium", "medium"], ["Hard", "hard"]]
+      "options": [["Easy", "easy"], ["Medium", "medium"]]
     }
   ]}
 }
