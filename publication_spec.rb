@@ -154,16 +154,6 @@ describe 'Daily Puzzle Publication' do
   
   end
 
-  describe 'config options' do
-    
-    it 'should have a config_options.json file which should contail json' do
-      get '/config_options.json'
-      last_response["Content-Type"].should == "application/json;charset=utf-8"
-      json = JSON.parse(last_response.body)
-    end
-    
-  end
-
   describe 'get icon' do
   
     it 'should return a png for /icon' do

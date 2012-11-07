@@ -1,8 +1,0 @@
-{"fields": [
-  {
-    "type": "select",
-    "name": "difficulty",
-    "label": "Difficulty level",
-    "options": [["Easy", "easy"], ["Medium", "medium"], ["Hard", "hard"]]
-  }
-]}
